@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project/issues"
   },
-  "homepage": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project#readme"
+  "homepage": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project#readme",
+  "dependencies": {
+    "@truffle/contract": "^4.1.6"
+  }
 }
