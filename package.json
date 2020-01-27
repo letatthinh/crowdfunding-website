@@ -1,0 +1,26 @@
+{
+  "name": "uit-graduation-thesis-crowdfunding-project",
+  "version": "1.0.0",
+  "description": "This project builds a simple crowdfunding website and apply blockchain technology in payment.",
+  "main": "home.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project.git"
+  },
+  "keywords": [
+    "crowdfunding",
+    "donation",
+    "graduation",
+    "thesis",
+    "uit"
+  ],
+  "author": "Thinh Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project/issues"
+  },
+  "homepage": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project#readme"
+}
