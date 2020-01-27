@@ -22,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project/issues"
   },
-  "homepage": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project#readme"
+  "homepage": "https://github.com/trasonz/UIT-graduation-thesis-Crowdfunding-project#readme",
+  "dependencies": {
+    "@truffle/contract": "^4.1.6",
+    "@truffle/hdwallet-provider": "^1.0.29",
+    "solc": "^0.6.1",
+    "web3": "^1.2.1"
+  }
 }
