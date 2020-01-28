@@ -1,0 +1,137 @@
+/* id */
+
+.carousel-item {
+  height: 40rem;
+}
+.carousel-item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 40rem;
+}
+
+.featurette-heading {
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.05rem;
+}
+
+.carousel-caption {
+  bottom: 4rem;
+  z-index: 10;
+}
+
+/* class */
+.bottom
+{  
+  position: fixed;
+  bottom: 0;
+  z-index: 1030;
+}
+.bg-black {
+  background-color: black !important;
+}
+
+.btn-custom-dark {
+  color: white;
+  background-color: #343a40;
+}
+
+.btn-custom-dark:hover {
+  color: #343a40;
+  background-color: white;
+  border-color: #343a40;
+}
+
+.btn-custom-green {
+  color: white;
+  background-color: #28a745;
+}
+
+.btn-custom-green:hover {
+  color: #28a745;
+  background-color: white;
+  border-color: #28a745;
+}
+
+.btn-nc-red {
+  color: white;
+  background-color: rgb(227, 96, 83);
+}
+
+.btn-nc-red:hover {
+  color: rgb(227, 96, 83);
+  background-color: white;
+  border-color: rgb(227, 96, 83);
+}
+
+.btn-custom-yellow {
+  color: white;
+  background-color: #ffc107;
+}
+
+.btn-custom-yellow:hover {
+  color: #ffc107;
+  background-color: white;
+  border-color: #ffc107;
+}
+
+.btn-nc-red-white-border {
+  color: white;
+  background-color: rgb(227, 96, 83);
+  border-color: white;
+}
+
+.btn-nc-red-white-border:hover {
+  color: rgb(227, 96, 83);
+  background-color: white;
+  border-color: rgb(227, 96, 83);
+}
+
+.carousel-text-background {
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.text-black {
+  color: black !important;
+}
+
+#create-new-campaign-form label{
+    font-weight: 500;
+}
+
+#campaign-information label{
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: rgb(227, 96, 83);
+}
+
+.font-weight-500 {
+    font-weight: 500 !important;
+}
+
+.font-weight-600 {
+    font-weight: 600 !important;
+}
+
+.w-30 {
+  width: 30% !important;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+
+.w-60 {
+  width: 60% !important;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.w-90 {
+  width: 90% !important;
+}
