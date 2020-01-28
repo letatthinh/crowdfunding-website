@@ -4,11 +4,11 @@ var Ethereum = {
 	smartContract: null,
 
     initialization: async function () {
-        Ethereum.connectEthereumProvider();
+        await Ethereum.connectEthereumProvider();
         await Ethereum.initializeSmartContract();
     },
 
-    connectEthereumProvider: function () {
+    connectEthereumProvider: async function () {
         console.log('[TASK] Looking for an Ethereum provider API...')
         if (typeof window.ethereum === 'undefined') {
             throw new Error(
@@ -16,6 +16,7 @@ var Ethereum = {
                 "Please install the latest MetaMask version to your browser at: https://metamask.io/"
             )
         } else {
+            await ethereum.enable();
             if (window.ethereum.isMetaMask == true) {
                 console.log('\t[INFO] Connected to the MetaMask Ethereum provider API.')                
                 Ethereum.ethereumProvider = web3.currentProvider                
