@@ -1,319 +1,136 @@
+var myProfileTitle = 'Chiến dịch của tôi!'
+var myProfileDescription = 'Xin chào, <strong>' + window.web3.eth.defaultAccount + '</strong>! Đây là danh sách những chiến dịch bạn đã tạo:'
+var campaignIDParameter = 'campaignID'
+
 var Profile = {
 
-	smartContract: null,
-
     initialization: async function() {
-		Ethereum.initialization()
-		Profile.loadSmartContract()
-    },
-
-    loadSmartContract: async function () {
-        console.log('\n[TASK] Loading the smart contract...')
-        var smartContractJSON = await $.getJSON('../build/contracts/Crowdfunding.json')
-        Profile.smartContract = TruffleContract(smartContractJSON)
-        console.log('[TASK] Processed data from the smart contract JSON file...')
-        Profile.smartContract.setProvider(Ethereum.ethereumProvider)
-        console.log('[TASK] Connected the Ethereum provider API to the smart contract...')
-		console.log('[INFO] The smart contract has been loaded.')
-		Profile.loadAboutPage()
+        await Ethereum.initialization()
+		Profile.loadProfilePage()
     },	
 
-    loadAboutPage: function() {
-        Profile.loadPageHeader()
-        //Homepage.loadPageBody()
+    loadProfilePage: function() {
+        Page.loadNavigationBar(aboutPage)
+        Profile.LoadMyCampaigns()
+        Page.loadPageFooter()
     },
 
-    loadPageHeader: function() {
-        Page.loadNavigationBar(Enums.page.profile)
-    },
-
-    loadPageBody: async function(contract) {
-		var contract = await Homepage.smartContract.deployed()
-		var numberOfProjects = await contract.GetNumberOfProjects()
-        if (numberOfProjects == 0) {
-			Homepage.loadJumbotronText()
-            console.log('[INFO] No project found!')
-        } else {
-			Homepage.loadCarousel()
-        }
-    },
-
-    loadJumbotronText: function(img) {
-        $('body').append(
-			'<br>' +	
-			'<div class="jumbotron pt-5 mb-1">' +
-				'<div class="container text-center">' +
-					'<h1 class="display-4 text-black">Vietnam charity community</h1>' +
-					'<br>' +
-					'<p class="lead">Cộng đồng gây quỹ mới tại Việt Nam lần đầu tiên áp dụng công nghệ blockchain trong thanh toán.</p>' +
-					'<p class="lead">An toàn, tiện lợi và nhanh chóng</p>' +
-					'<br>' +
-					'<p>' +
-			  			'<a class="btn btn-nc-red btn-lg" href="#" role="button">Tạo một hoạt động gây quỹ mới ngay</a>' +
-					'</p>' +	
-					'<img class="text-center mt-5" src="https://media1.giphy.com/media/oHvgfgJOunESA/giphy.gif?cid=790b7611c1035426dcee3144e7fbf48db46780a90d215884&rid=giphy.gif">' +	
-		  	'</div>'
-        )
-    },
-
-    loadCarousel: async function() {
-		// struture
-		$('body').append(
-			'<main role="main">' +
-				'<div id="#homepage-carousel" class="carousel slide" data-ride="carousel">' +
-					'<ol class="carousel-indicators"></ol>' +
-					'<div class="carousel-inner"></div>' +					
-					'<a class="carousel-control-prev" href="#homepage-carousel" role="button" data-slide="prev">' +
-						'<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
-						'<span class="sr-only">Previous</span>' +
-					'</a>' +
-					'<a class="carousel-control-next" href="#homepage-carousel" role="button" data-slide="next">' +
-						'<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
-						'<span class="sr-only">Next</span>' +
-					'</a>' +
-				'</div>' +
-			'</main>'
+    LoadMyCampaigns: async function () {
+        ethereum.on('accountsChanged', function (accounts) {
+            window.location.reload()
+        })
+		$('main').append(
+			'<div id="list-of-campaigns" class="container mb-4">' +
+				'<hr>' +
+				'<h1 id="my-profile-title" class="display-45 font-weight-light my-4">' + myProfileTitle + '</h1>' +
+				'<p id="my-profile-description">' + myProfileDescription + '</p>' +
+			'</div>'
 		)
+
+		var contract = await Ethereum.smartContract.deployed()
+        var numberOfCampaigns = await contract.GetNumberOfCampaigns()
 		
-		var contract = await Homepage.smartContract.deployed()
-		var numberOfProjects = await contract.GetNumberOfProjects()
+		for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
+			var campaignOwner = await contract.GetCampaignOwner(campaignID)
+			if (campaignOwner.toLowerCase() == window.web3.eth.defaultAccount) {   
+				var campaignName = await contract.GetCampaignName(campaignID)                 
+				var campaignImageLink = await contract.GetCampaignImageLink(campaignID)
+				var campaignDescription = await contract.GetCampaignDescription(campaignID)
+				var campaignGoal = await contract.GetCampaignGoal(campaignID)
+				var campaignMoneyCollected = await contract.GetCampaignMoneyCollected(campaignID)
+				var campaignStartDate = await contract.GetCampaignStartDate(campaignID)
+				var campaignEndDate = await contract.GetCampaignEndDate(campaignID)
+				var campaignStatus = await contract.GetCampaignStatus(campaignID)
+				var percentage = ((campaignMoneyCollected / campaignGoal) * 100).toFixed(2)
 
-		var maxDisplayProjects = 3
-		var currentprojects = 0
-		var CarouselIndicators = ''
-		var CarouselItemActiveStatus = ''
-
-		for (var index = numberOfProjects - 1; index >= 0; index--) {
-			if (currentprojects == 0) {
-				CarouselIndicators = '<li data-target="#homepage-carousel" data-slide-to="0" class="active"></li>'
-				CarouselItemActiveStatus = '<div class="carousel-item active">'
-			}
-			else {
-				CarouselIndicators = '<li data-target="#homepage-carousel" data-slide-to="' + currentprojects + '"></li>'
-				CarouselItemActiveStatus = '<div class="carousel-item">'
-			}
-			$('.carousel-indicators').append(CarouselIndicators)
-			
-			var projectImageLink = await contract.GetProjectImageLink(index)
-			var projectName = await contract.GetProjectName(index)
-			var projectDescription = await contract.GetProjectDescription(index)
-			projectDescription = Utilities.reduceString(projectDescription, 250)
-			
-			$('.carousel-inner').append(
-				CarouselItemActiveStatus +
-					'<img src="' + projectImageLink + '">' +
+				var campaignStatusText
+				switch (Number(campaignStatus)) {
+					case 0:
+						if (Utilities.isValidDateRange(Utilities.getcurrentDate(), campaignEndDate) == false) {
+							campaignStatusText = 'Chiến dịch đã hết hạn gây quỹ.'
+						} else {
+							campaignStatusText = 'Đang trong tiến trình nhận quỹ'
+						}
+						break
+					case 1:
+						campaignStatusText = 'Đã đạt được mục tiêu'
+						break
+					case 2:
+						campaignStatusText = 'Chiến dịch này đã đóng'
+						break
+					default:
+						console.log('Không đọc được thông tin về tình trạng của chiến dịch')
+				}
+				
+				$('main').append(
 					'<div class="container">' +
-						'<div class="carousel-caption text-left carousel-text-background px-5">' +
-							'<h1>' + projectName +'</h1>' +
-							'<br>' +
-							'<p>' + projectDescription + '</p>' +
-							'<br>' +
-							'<p><a class="btn btn-lg bg-nc-red" href="#" role="button">Xem ngay →</a></p>' +
+						'<div class="row border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative w-90 mx-auto">' +
+							'<div class="col-auto p-4">' +
+								'<img class="bd-placeholder-img" width="425" height="300" src="' + campaignImageLink + '"></img>' +
+							'</div>' +
+							'<div class="col p-4 d-flex flex-column">' +
+								'<h4 id="campaign-' + campaignID + '-name" class="text-nc-red text-justify">' + campaignName + '</h4>' +
+								'<div class="mb-2 text-muted small font">Ngày bắt đầu: <span id="campaign-' + campaignID + '-start-date">' + campaignStartDate + '</span> - Ngày kết thúc: <span id="campaign-' + campaignID + '-end-date">' + campaignEndDate + '</span></div>' +
+								'<p id="campaign-' + campaignID + '-description" class="card-text text-justify mb-2">' + Utilities.reduceString(campaignDescription, 150) + '</p>' +
+								'<p id="campaign-' + campaignID + '-status" class="mb-2">Tình trạng của chiến dịch: <span class="font-weight-bold">' + campaignStatusText + '</span></p>' +
+								'<p class="mb-2">Số tiền nhận được: <span id="campaign-' + campaignID + '-money-collected">' + Utilities.addCommasToNumber(campaignMoneyCollected) + '</span> VNĐ / <span id="campaign-' + campaignID + '-goal">' + Utilities.addCommasToNumber(campaignGoal) + '</span> VNĐ (' + percentage + '%)</p>' +
+								'<div id="campaign-' + campaignID + '-progress" class="progress" style="height: 2px;">' +
+								'</div>' +
+								'<div class="text-right mt-auto">' +
+									'<a class="btn btn-sm btn-nc-red py-2 px-3 mr-1 rounded-pill" href="#" role="button">Xem chiến dịch này</a>' +
+								'</div>' +
+							'</div>' +
 						'</div>' +
-					'</div>' +
-				'</div>'
-			)
-			currentprojects++
-			if (currentprojects == maxDisplayProjects || currentprojects == numberOfProjects)
-			{
-				console
-				break;
+					'</div>'
+				)
+				Profile.loadProgressBar(campaignMoneyCollected, campaignGoal, '#campaign-' + campaignID + '-progress', false)
+				//count++ 
 			}
 		}
-		Homepage.loadJumbotronText()
-		Homepage.loadCategories()
 	},
 
-    loadCategories: function() {
-		$('body').append(
-			'<div class="album py-5 bg-light">' +
-				'<h1 class="display-4 text-center mb-4">Phân loại chiến dịch gây quỹ</h1>' +
-				'<br>' +
-				'<div class="w-75 mx-auto">' +
-					'<ul class="list-unstyled d-flex justify-content-between list-categories">' +
-						'<li>' +
-							'<a href="#" class="btn btn-lg">' +
-								'<img src="https://image.flaticon.com/icons/svg/328/328032.svg" alt="kindmate-icon" class="mr-2" width="28">' +
-								'Gây quỹ từ thiện' +
-							'</a>' +
-						'</li>' +
-						'<li>' +
-							'<a class="btn btn-lg">' +
-								'<img src="https://image.flaticon.com/icons/svg/744/744922.svg" alt="kindmate-icon" class="mr-2" width="28">' +
-								'Gây quỹ nhận phần thưởng' +
-							'</a>' +
-						'</li>' +
-						'<li>' +
-							'<a class="btn btn-lg">' +
-								'<img src="https://image.flaticon.com/icons/svg/1500/1500911.svg" alt="kindmate-icon" class="mr-2" width="28">' +
-								'Gây quỹ đầu tư nhận lãi suất' +
-							'</a>' +
-						'</li>' +
-						'<li>' +
-							'<a class="btn btn-lg">' +
-								'<img src="https://image.flaticon.com/icons/svg/2304/2304582.svg" alt="kindmate-icon" class="mr-2" width="28">' +
-								'Gây quỹ đầu tư vay mượn' +
-							'</a>' +
-						'</li>' +
-					'</ul>' +
-				'</div>' +
-			'</div>'
-		)
-	},
-
-    loadSampleProjects: function() {
-		$('body').append(
-			'<div class="album py-5 bg-light">' +
-			'<div class="container">' +
-			'' +
-			'<div class="row">' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'<div class="col-md-4">' +
-			'<div class="card mb-4 shadow-sm">' +
-			'<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>' +
-			'<div class="card-body">' +
-			'<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>' +
-			'<div class="d-flex justify-content-between align-items-center">' +
-			'<div class="btn-group">' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
-			'<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>' +
-			'</div>' +
-			'<small class="text-muted">9 mins</small>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>'
-		)
-		Homepage.loadPageFooter()
-	},
-
-    loadPageFooter: function() {
-        //Page.loadPageFooter()
-    },
+    loadProgressBar: function (_campaignMoneyCollected, _campaignGoal, _selector, _IsShowPercentage) {
+        var backgroundColor
+        var textColor
+        var percentage = ((_campaignMoneyCollected / _campaignGoal) * 100).toFixed(2)
+        var progressBarLoadingNumber = percentage
+        var progressBarTheme = ' progress-bar-striped progress-bar-animated'
+        if (percentage == 0) {
+            backgroundColor = 'bg-light'
+            textColor = 'text-dark'
+        } else if (percentage > 0 && percentage <= 20) {
+            backgroundColor = 'bg-danger'
+            textColor = 'text-light'
+        } else if (percentage > 20 && percentage <= 50) {
+            backgroundColor = 'bg-warning'
+            textColor = 'text-dark'
+        } else if (percentage > 50 && percentage <= 70) {
+            backgroundColor = 'bg-info'
+            textColor = 'text-white'
+        } else if (percentage > 70 && percentage < 100) {
+            backgroundColor = 'bg-primary'
+            textColor = 'text-white'
+        } else if (percentage >= 100) {
+            backgroundColor = 'bg-success'
+            textColor = 'text-white'
+            progressBarLoadingNumber = 100
+            progressBarTheme = ''
+        }
+        var percentageText = ''
+        if (_IsShowPercentage == true) {
+            percentageText = percentage + '%'
+        }
+        $(_selector).append(
+            '<div class="progress-bar ' + 
+                        backgroundColor + ' ' + 
+                        textColor + ' ' + 
+                        progressBarTheme + 
+                        '" role="progressbar" style="width: ' + progressBarLoadingNumber + '%;"' +
+                        'aria-valuenow="' + progressBarLoadingNumber + '"' +
+                        'aria-valuemin="0" aria-valuemax="100"><strong>' + percentageText + '</strong></div>' +
+            '</div>'
+        )
+    }
 }
 
 $(window).on('load', function() {

@@ -1,7 +1,5 @@
 var About = {
 
-	smartContract: null,
-
     initialization: async function() {
         await Ethereum.initialization()
 		About.loadAboutPage()
