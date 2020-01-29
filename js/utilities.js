@@ -64,7 +64,7 @@ var Utilities = {
             var ETHtoVNDData = await $.get(url)
             ether = moneyInput / ETHtoVNDData[0].current_price
         }
-        return web3.toWei(ether, "ether")
+        return web3.toWei(ether.toFixed(8), "ether")
     },
     
     addCommasToNumber: function (number) {
@@ -77,7 +77,6 @@ var Utilities = {
     },
 
 	sendEtherToOwner: async function (_accountFrom, _accountTo, _weiValue) {
-        console.log('_weiValue: ' + _weiValue)
         const transactionParameters = {
             gas: '21000',  // customizable by user during MetaMask confirmation.
             from: _accountFrom, // must match user's active address.
@@ -87,7 +86,6 @@ var Utilities = {
         await ethereum.sendAsync({
             method: 'eth_sendTransaction',
             params: [transactionParameters],
-            from: _accountFrom,
         }, function () {})
     }
 }

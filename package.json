@@ -27,8 +27,8 @@
   "dependencies": {
     "@truffle/contract": "^4.1.6",
     "@truffle/hdwallet-provider": "^1.0.29",
-    "solc": "^0.6.1",
-    "web3": "^1.2.1"
+    "solc": "^0.6.2",
+    "web3": "^1.2.5"
   },
   "devDependencies": {
     "lite-server": "^2.5.4"
