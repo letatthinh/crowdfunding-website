@@ -13,45 +13,25 @@ contract Crowdfunding
 
     constructor() public
     {
-        /*
-        CreateNewCampaign(0xAd6d6717a14a1F7fE8DF380220912fC96Be1F691,
-                        "Ngân hàng tranh Tòhe Bank 2",
-                        "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
-                        "http://tohebank.com/painting",
-                        1000000,
-                        "http://tohebank.com/admin//uploads/news/1480251170PWN_7398-3.jpg",
-                        "01/01/2020",
-                        "01/19/2020",
-                        "tu thien, tre em");
-        ContributeToCampaign(0, 0xAd6d6717a14a1F7fE8DF380220912fC96Be1F691, 'today test', 20000);
-        CreateNewCampaign(0xBf3d2b9AB49c87aa82D8D0babA193C7520aABE12,
-                        "Ngân hàng tranh Tòhe Bank 1",
-                        "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
-                        "http://tohebank.com/painting",
-                        1000000,
-                        "http://tohebank.com/admin//uploads/news/1480251170PWN_7398-3.jpg",
-                        "01/01/2020",
-                        "01/19/2020",
-                        "tu thien, tre em");
-        CreateNewCampaign(0xBf3d2b9AB49c87aa82D8D0babA193C7520aABE12,
+        CreateNewCampaign(0xC76b0A9320bFbE6e257CEf138dB145c885245fd3,
                         "Ngân hàng tranh Tòhe Bank",
                         "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
                         "http://tohebank.com/painting",
-                        1000000,
+                        5000000,
                         "http://tohebank.com/admin//uploads/news/1480251170PWN_7398-3.jpg",
                         "01/01/2020",
-                        "01/19/2020",
+                        "02/19/2020",
                         "tu thien, tre em");
-        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
+        CreateNewCampaign(0x7aE4C21E1a882fB168E5F88a4275FB969e692709,
                         "Student Grow - Cộng đồng hổ trợ sinh viên UIT",
                         "Các chương trình đào tạo của Trường được thiết kế đáp ứng tốt nhu cầu học tập, nghiên cứu đa dạng của người học và cung cấp nguồn nhân lực chất lượng cao theo yêu cầu của xã hội về lĩnh vực CNTT&TT theo các cấp độ từ bậc đào tạo đại học đến sau đại học (bao gồm thạc sỹ và tiến sỹ). Trường có 17 chương trình chính quy đào tạo bậc kỹ sư và cử nhân. Bên cạnh đó, là một trong 08 trường trọng điểm về đào tạo ngành An toàn Thông tin của Việt Nam và đáp ứng các nhu cầu đặc biệt của xã hội, Trường có 07 chương trình đào tạo đặc biệt (hệ chính quy) các ngành: kỹ sư tài năng ngành An toàn Thông tin, chương trình tiên tiến ngành Hệ thống Thông tin, cử nhân tài năng ngành Khoa học Máy tính v.v…Ở bậc đào tạo sau đại học, có 03 chương trình đào tạo trình độ thạc sĩ (ngành khoa học máy tính, công nghệ thông tin và hệ thống thông tin) và 02 chương trình đào tạo trình độ tiến sĩ (ngành khoa học máy tính và công nghệ thông tin). Thông qua các chương trình đào tạo tiên tiến, CNTT được ứng dụng mạnh mẽ trong quá trình tổ chức đào tạo, thay đổi nội dung, phương pháp giảng dạy theo hướng hiện đại và bám sát các yêu cầu của thực tiễn, đồng thời tăng cường khả năng sử dụng tiếng Anh cho người học. Tổng số sinh viên, học viên cao học và nghiên cứu sinh hiện nay của Trường là hơn 6.000.",
                         "https://www.uit.edu.vn/",
                         35000000,
                         "https://scontent.fsgn5-5.fna.fbcdn.net/v/t31.0-8/13221300_1083224231719576_2757809742062362212_o.jpg?_nc_cat=100&_nc_ohc=UnNSxQd9Y00AQnrja3lUaSCVeYoJdsdL94iHBRwrghOPUmq7d1mjABcKA&_nc_ht=scontent.fsgn5-5.fna&oh=6f5472b4d447541e8ba4c7dbc87d70b5&oe=5E9D1174",
                         "01/01/2020",
-                        "01/20/2020",
+                        "01/31/2020",
                         "ý tưởng, sinh viên, dự án công nghệ, UIT");
-        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
+        CreateNewCampaign(0xceCE4a0DBC03CCBd3b68B30233e337c96A01C7E0,
                         "VNPhoto - Cuộc thi chụp ảnh đẹp Việt Nam",
                         "Hãy cùng giúp đỡ những nhiếp ảnh gia có được những tấm hình đẹp nhất về quê hương đất nước Việt Nam.",
                         "https://www.uit.edu.vn/",
@@ -60,7 +40,7 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/21/2020",
                         "đất nước, quê hương, ảnh nghệ thuật");
-        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
+        CreateNewCampaign(0x7aE4C21E1a882fB168E5F88a4275FB969e692709,
                         "Chiến dịch Tết sum vầy",
                         "Cùng chung tay ủng hộ các trẻ em nghèo để các em có thể khám phá ngày Tết truyền thống và những hoạt động thú vị trong ngày lễ này.",
                         "https://tuoitre.vn/hoat-dong-thien-nguyen-tet-tre-em-tai-le-hoi-tet-viet-2020-20200105091519287.htm",
@@ -69,7 +49,15 @@ contract Crowdfunding
                         "01/17/2020",
                         "02/15/2020",
                         "Tết, lễ hội, trẻ em");
-        */
+        CreateNewCampaign(0xC76b0A9320bFbE6e257CEf138dB145c885245fd3,
+                        "Cộng đồng Sinh viên Thiện nguyện",
+                        "Cùng chung tay giúp các bạn sinh viên trẻ tham gia các hoạt động thiện nguyện để nấu những bữa ăn ngon cho những bệnh nhân đang gặp khó khăn tại bệnh viện Quận Thủ Đức.",
+                        "https://www.facebook.com/groups/965064530234671/",
+                        3000000,
+                        "https://scontent.fsgn5-7.fna.fbcdn.net/v/t1.0-9/54415239_1152865048224339_2867883834022559744_o.jpg?_nc_cat=110&_nc_ohc=P5GhaULe4fcAX9a5pK0&_nc_ht=scontent.fsgn5-7.fna&oh=1a7afd08b773f184231f0a76e812743c&oe=5EC6C18B",
+                        "01/29/2020",
+                        "0/29/2020",
+                        "từ thiện, sinh viên, bệnh nhân");
     }
 
     struct Campaign

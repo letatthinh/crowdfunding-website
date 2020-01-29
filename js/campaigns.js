@@ -90,7 +90,7 @@ var CampaignPage = {
                 var count = 0
                 for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
                     var campaignName = await contract.GetCampaignName(campaignID)
-                    if (campaignName.toLowerCase().includes($('#campaign-search-textbox').val())) {                    
+                    if (campaignName.toLowerCase().includes($('#campaign-search-textbox').val().toLowerCase())) {                    
                         var campaignImageLink = await contract.GetCampaignImageLink(campaignID)
                         var campaignDescription = await contract.GetCampaignDescription(campaignID)
                         var campaignGoal = await contract.GetCampaignGoal(campaignID)

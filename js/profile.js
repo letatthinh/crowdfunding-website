@@ -73,8 +73,8 @@ var Profile = {
 								'<div class="mb-2 text-muted small font">Ngày bắt đầu: <span id="campaign-' + campaignID + '-start-date">' + campaignStartDate + '</span> - Ngày kết thúc: <span id="campaign-' + campaignID + '-end-date">' + campaignEndDate + '</span></div>' +
 								'<p id="campaign-' + campaignID + '-description" class="card-text text-justify mb-2">' + Utilities.reduceString(campaignDescription, 150) + '</p>' +
 								'<p id="campaign-' + campaignID + '-status" class="mb-2">Tình trạng của chiến dịch: <span class="font-weight-bold">' + campaignStatusText + '</span></p>' +
-								'<p class="mb-2">Số tiền nhận được: <span id="campaign-' + campaignID + '-money-collected">' + Utilities.addCommasToNumber(campaignMoneyCollected) + '</span> VNĐ / <span id="campaign-' + campaignID + '-goal">' + Utilities.addCommasToNumber(campaignGoal) + '</span> VNĐ (' + percentage + '%)</p>' +
-								'<div id="campaign-' + campaignID + '-progress" class="progress" style="height: 2px;">' +
+								'<p class="mb-3">Số tiền nhận được: <span id="campaign-' + campaignID + '-money-collected">' + Utilities.addCommasToNumber(campaignMoneyCollected) + '</span> VNĐ / <span id="campaign-' + campaignID + '-goal">' + Utilities.addCommasToNumber(campaignGoal) + '</span> VNĐ (' + percentage + '%)</p>' +
+								'<div id="campaign-' + campaignID + '-progress" class="progress" style="height: 4px;">' +
 								'</div>' +
 								'<div class="text-right mt-auto">' +
 									'<a class="btn btn-sm btn-nc-red py-2 px-3 mr-1 rounded-pill" href="#" role="button">Xem chiến dịch này</a>' +
