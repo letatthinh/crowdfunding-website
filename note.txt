@@ -1,0 +1,71 @@
+◼ Ethereum Provider API
+
+    + MetaMask injects a global API into websites visited by its users at window.ethereum. This API allows websites to request user login, load data from blockchains the user has a connection to, and suggest that the user sign messages and transactions.
+
+◼ require is not defined
+
+    + Node.JS is a server-side technology, not a browser technology. Thus, Node-specific calls, like require(), do not work in the browser.
+
+◼ require is not defined
+
+    + The web3.js library is a collection of modules which contain specific functionality for the ethereum ecosystem.    
+
+◼ Solidity:
+
+    + Default values (https://solidity.readthedocs.io/en/v0.6.0/control-structures.html#scoping-and-declarations)
+
+        A variable which is declared will have an initial default value whose byte-representation is all zeros. 
+        
+        For example: the default value for a bool is false. The default value for the uint or int types is 0. For statically-sized arrays and bytes1 to bytes32, each individual element will be initialized to the default value corresponding to its type. For dynamically-sized arrays, bytes and string, the default value is an empty array or string. For the enum type, the default value is its first member.
+    
+    + Interger
+
+        int / uint: Signed and unsigned integers of various sizes. Keywords uint8 to uint256 in steps of 8 (unsigned of 8 up to 256 bits) and int8 to int256. uint and int are aliases for uint256 and int256, respectively.
+
+    + Wei
+
+        pragma solidity ^0.5.11;
+
+        contract EtherUnits {
+            uint64 public oneWei = 5;
+
+            function testOneWei() public view returns (bool) {
+                return oneWei == 5 wei; // true
+            }
+        }
+
+        The WebSocket API is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server.
+
+◼ About Application:
+
+    + Prerequisite
+        1. Node.js
+            |_ lite-server and core.js
+            |   - In package.json:                    
+            |       "scripts": {
+            |           ... ,
+            |           "dev": "lite-server"
+            |       }
+            |_ web3.js
+            |_ solc.js
+            |_ truffle.js and trufle-contract.js
+        2. MetaMask
+        3. Ganache
+        4. Github
+        5. Visual Studio Code
+        6. Source Tree
+
+        ---------------------------------------------
+
+
+    
+    Connect to MetaMask - an Ethereum provider API
+    2. Initialize smart contract
+
+    truffle migrate --network ropsten
+
+    Không thể load contract trong Ethereum  vì nó là một promise, java sẽ vẫn tiếp tục chạy hàm tiếp theo trong khi thực hiện promise
+
+    
+
+    
