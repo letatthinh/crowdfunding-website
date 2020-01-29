@@ -55,6 +55,10 @@
   border-color: #28a745;
 }
 
+.text-nc-red {
+  color: rgb(227, 96, 83);
+}
+
 .btn-nc-red {
   color: white;
   background-color: rgb(227, 96, 83);
