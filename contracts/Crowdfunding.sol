@@ -13,7 +13,7 @@ contract Crowdfunding
 
     constructor() public
     {
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        CreateNewCampaign(0xAd6d6717a14a1F7fE8DF380220912fC96Be1F691,
                         "Ngân hàng tranh Tòhe Bank 2",
                         "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
                         "http://tohebank.com/painting",
@@ -22,8 +22,8 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/19/2020",
                         "tu thien, tre em");
-        ContributeToCampaign(0, 0xC3dCb581770c5C50aCDa46119732C505cEd8999c, 'today test', 20000);
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        ContributeToCampaign(0, 0xAd6d6717a14a1F7fE8DF380220912fC96Be1F691, 'today test', 20000);
+        CreateNewCampaign(0xBf3d2b9AB49c87aa82D8D0babA193C7520aABE12,
                         "Ngân hàng tranh Tòhe Bank 1",
                         "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
                         "http://tohebank.com/painting",
@@ -32,7 +32,7 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/19/2020",
                         "tu thien, tre em");
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        CreateNewCampaign(0xBf3d2b9AB49c87aa82D8D0babA193C7520aABE12,
                         "Ngân hàng tranh Tòhe Bank",
                         "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
                         "http://tohebank.com/painting",
@@ -41,7 +41,7 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/19/2020",
                         "tu thien, tre em");
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
                         "Student Grow - Cộng đồng hổ trợ sinh viên UIT",
                         "Các chương trình đào tạo của Trường được thiết kế đáp ứng tốt nhu cầu học tập, nghiên cứu đa dạng của người học và cung cấp nguồn nhân lực chất lượng cao theo yêu cầu của xã hội về lĩnh vực CNTT&TT theo các cấp độ từ bậc đào tạo đại học đến sau đại học (bao gồm thạc sỹ và tiến sỹ). Trường có 17 chương trình chính quy đào tạo bậc kỹ sư và cử nhân. Bên cạnh đó, là một trong 08 trường trọng điểm về đào tạo ngành An toàn Thông tin của Việt Nam và đáp ứng các nhu cầu đặc biệt của xã hội, Trường có 07 chương trình đào tạo đặc biệt (hệ chính quy) các ngành: kỹ sư tài năng ngành An toàn Thông tin, chương trình tiên tiến ngành Hệ thống Thông tin, cử nhân tài năng ngành Khoa học Máy tính v.v…Ở bậc đào tạo sau đại học, có 03 chương trình đào tạo trình độ thạc sĩ (ngành khoa học máy tính, công nghệ thông tin và hệ thống thông tin) và 02 chương trình đào tạo trình độ tiến sĩ (ngành khoa học máy tính và công nghệ thông tin). Thông qua các chương trình đào tạo tiên tiến, CNTT được ứng dụng mạnh mẽ trong quá trình tổ chức đào tạo, thay đổi nội dung, phương pháp giảng dạy theo hướng hiện đại và bám sát các yêu cầu của thực tiễn, đồng thời tăng cường khả năng sử dụng tiếng Anh cho người học. Tổng số sinh viên, học viên cao học và nghiên cứu sinh hiện nay của Trường là hơn 6.000.",
                         "https://www.uit.edu.vn/",
@@ -50,7 +50,7 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/20/2020",
                         "ý tưởng, sinh viên, dự án công nghệ, UIT");
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
                         "VNPhoto - Cuộc thi chụp ảnh đẹp Việt Nam",
                         "Hãy cùng giúp đỡ những nhiếp ảnh gia có được những tấm hình đẹp nhất về quê hương đất nước Việt Nam.",
                         "https://www.uit.edu.vn/",
@@ -59,7 +59,7 @@ contract Crowdfunding
                         "01/01/2020",
                         "01/21/2020",
                         "đất nước, quê hương, ảnh nghệ thuật");
-        CreateNewCampaign(0xC3dCb581770c5C50aCDa46119732C505cEd8999c,
+        CreateNewCampaign(0xfD2A82d9C0e373Ba6a8A8689741a7Fc433d5861F,
                         "Chiến dịch Tết sum vầy",
                         "Cùng chung tay ủng hộ các trẻ em nghèo để các em có thể khám phá ngày Tết truyền thống và những hoạt động thú vị trong ngày lễ này.",
                         "https://tuoitre.vn/hoat-dong-thien-nguyen-tet-tre-em-tai-le-hoi-tet-viet-2020-20200105091519287.htm",

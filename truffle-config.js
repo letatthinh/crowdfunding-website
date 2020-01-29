@@ -1,5 +1,5 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-var mnemonic = "elegant pottery logic donkey baby chat tackle keen maximum stem siren virtual"
+var mnemonic = "garbage bitter ensure plug uncover soft hole agree venture rabbit property gossip"
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -97,7 +97,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.6.1",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.6.2",    // Fetch exact version from solc-bin (default: truffle's version)
       parser: "solcjs",
       settings: {          // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
