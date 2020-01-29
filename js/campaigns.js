@@ -66,7 +66,7 @@ var CampaignPage = {
                     '<div id="not-allow-empty-search-text" class="invalid-feedback">Lỗi! Ô tìm kiếm không được để trống hoặc từ khóa phải nhiều hơn 2 kí tự.</div>' +
 				'</form>' +
 				'<div id="campaign-search-result" class="row">' +
-				'</div>' +	
+				'</div>' +
                 '<nav id="pagination-area">' +
                     '<ul id="campaigns-pagination" class="pagination justify-content-center mt-3">' +
                     '</ul>' +
@@ -90,7 +90,7 @@ var CampaignPage = {
                 var count = 0
                 for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
                     var campaignName = await contract.GetCampaignName(campaignID)
-                    if (campaignName.includes($('#campaign-search-textbox').val())) {                    
+                    if (campaignName.toLowerCase().includes($('#campaign-search-textbox').val())) {                    
                         var campaignImageLink = await contract.GetCampaignImageLink(campaignID)
                         var campaignDescription = await contract.GetCampaignDescription(campaignID)
                         var campaignGoal = await contract.GetCampaignGoal(campaignID)
@@ -150,7 +150,7 @@ var CampaignPage = {
             // 0 1 2 3 4 5
 			var firstCampaignID
 			var lastCampaignID
-			var numberOfPages            
+			var numberOfPages
 			if (numberOfCampaigns <= numberOfCcampaignsPerPage) {
                 numberOfPages = 1
                 console.log('\t[INFO] The total number of pages is 1')
@@ -332,7 +332,7 @@ var CampaignPage = {
                                 '</li>' +
                                 '<li class="list-group-item">' +
                                     '<h6 class="my-0">Tình trạng của chiến dịch</h6>' +
-                                    '<small id="campaign-' + _campaignID + '-money-collected" class="' + campaignStatusTextColor + '">' + campaignStatusText + '</small>' +
+                                    '<small id="campaign-' + _campaignID + '-status" class="' + campaignStatusTextColor + '">' + campaignStatusText + '</small>' +
                                 '</li>' +
                                 '<li class="list-group-item">' +
                                     '<h6 class="my-0">Mục tiêu gây quỹ của chiến dịch</h6>' +
