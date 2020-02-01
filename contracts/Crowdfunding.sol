@@ -143,6 +143,10 @@ contract Crowdfunding
         }
     }
     
+    function GetContractBalance() public view returns(uint) {
+        return address(this).balance;
+    }
+
     function CloseCampaign(uint24 _campaignID) public
     {
         ListOfCampaigns[_campaignID].status = CampaignStatus.Closed;

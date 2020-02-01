@@ -1,5 +1,4 @@
-var myProfileTitle = 'Chiến dịch của tôi!'
-var myProfileDescription = 'Xin chào, <strong>' + window.web3.eth.defaultAccount + '</strong>! Đây là danh sách những chiến dịch bạn đã tạo:'
+
 var campaignIDParameter = 'campaignID'
 
 var Profile = {
@@ -19,6 +18,8 @@ var Profile = {
         ethereum.on('accountsChanged', function (accounts) {
             window.location.reload()
         })
+		var myProfileTitle = 'Chiến dịch của tôi!'
+		var myProfileDescription = 'Xin chào, <strong>' + window.web3.eth.defaultAccount + '</strong>! Đây là danh sách những chiến dịch bạn đã tạo:'
 		$('main').append(
 			'<div id="list-of-campaigns" class="container mb-4">' +
 				'<hr>' +
@@ -61,6 +62,7 @@ var Profile = {
 					default:
 						console.log('Không đọc được thông tin về tình trạng của chiến dịch')
 				}
+				var openCampaignQuery = '?' + campaignIDParameter + '=' + campaignID
 				
 				$('main').append(
 					'<div class="container">' +
@@ -77,7 +79,7 @@ var Profile = {
 								'<div id="campaign-' + campaignID + '-progress" class="progress" style="height: 4px;">' +
 								'</div>' +
 								'<div class="text-right mt-auto">' +
-									'<a class="btn btn-sm btn-nc-red py-2 px-3 mr-1 rounded-pill" href="#" role="button">Xem chiến dịch này</a>' +
+									'<a class="btn btn-sm btn-nc-red py-2 px-3 mr-1 rounded-pill" href="' + campaignsPagePath + openCampaignQuery + '" role="button">Xem chiến dịch này</a>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
