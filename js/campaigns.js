@@ -411,7 +411,6 @@ var CampaignPage = {
                     '<a id="tag-keyword-' + (tagWordIndex + 1 ) + '" href="' + campaignsPagePath + '?' + searchKeywordsParameter + '=' + tagWords[tagWordIndex] + '">' + tagWords[tagWordIndex] + '</a>' + comma
                 )
             }
-        console.log(words.length)
 
             // Check if the campaign contains the original link from another website so that display it in description section
             if (campaignlink != '') {
