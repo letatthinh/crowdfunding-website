@@ -4,8 +4,8 @@ var Ethereum = {
 	smartContract: null,
 
     initialization: async function () {
-        await Ethereum.connectEthereumProvider();
-        await Ethereum.initializeSmartContract();
+        await Ethereum.connectEthereumProvider()
+        await Ethereum.initializeSmartContract()
     },
 
     connectEthereumProvider: async function () {
@@ -25,6 +25,12 @@ var Ethereum = {
             } else {
                 // [Feature]: Setup the connection from other softwares that similar to Meta Mask
             }
+            /*
+            ethereum.autoRefreshOnNetworkChange = false
+            ethereum.on('networkChanged', function () {
+
+              })
+              */
         }
     },
 

@@ -13,6 +13,7 @@ contract Crowdfunding
 
     constructor() public
     {
+        /*
         CreateNewCampaign(0xC76b0A9320bFbE6e257CEf138dB145c885245fd3,
                         "Ngân hàng tranh Tòhe Bank",
                         "Tòhe Bank là ngân hàng tranh trẻ em trực tuyến đầu tiên và duy nhất tại Việt Nam (cho đến thời điểm hiện tại). Chúng tôi tập hợp, trưng bày và giới thiệu tranh vẽ của các em nhỏ ở khắp mọi nơi, không phân biệt quốc gia, dân tộc hay hoàn cảnh.",
@@ -58,6 +59,7 @@ contract Crowdfunding
                         "01/29/2020",
                         "0/29/2020",
                         "từ thiện, sinh viên, bệnh nhân");
+                        */
     }
 
     struct Campaign

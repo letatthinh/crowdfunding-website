@@ -4,9 +4,10 @@ const numberPagesInPagination = 5
 // parameters
 var campaignIDParameter = 'campaignID'
 var editIDParameter = 'edit'
+var searchKeywordsParameter = 'search'
 
 const campaignSearchTitle = 'Tìm kiếm chiến dịch'
-const campaignSearchInputPlaceHolder = 'Nhập từ khóa'
+const campaignSearchInputPlaceHolder = 'Tìm kiếm theo tên chiến dịch hoặc từ khóa'
 
 const noCampaignFoundText = '<strong>Oops</strong>! Chưa có một chiến dịch nào được tạo ra. Hãy là người đầu tiên tạo ra chiến dịch gây quỹ trên trang web của chúng tôi.'
 const noCampaignFoundImageLink = 'https://media2.giphy.com/media/pbNiovq3iFnlm/giphy.gif?cid=790b7611375195b8865cd8683e65149a60a3e06bb7c20069&rid=giphy.gif'
@@ -51,21 +52,98 @@ var CampaignPage = {
             var campaignID = queryData.get(campaignIDParameter)
             console.log('\t\t[INFO] The query string contains campaign ID information. The current campaign ID is page ' + campaignID)
             CampaignPage.loadCampaign(campaignID)
+        } else if (queryData.has(searchKeywordsParameter) == true) {            
+            var keywords = queryData.get(searchKeywordsParameter)
+            CampaignPage.searchCampaigns(keywords)
+        }
+    },
+
+    searchCampaigns: async function (_keywords) {
+        console.log('\n[TASK] Loading for campaigns with name or tags containing keyword: ' + _keywords)
+		$('main').append(
+			'<div id="list-of-campaigns" class="container mb-3">' +
+				'<hr>' +
+				'<h1 id="campaign-search-title" class="display-45 font-weight-light my-4">Những chiến dịch có chứa từ "' + _keywords + '"</h1>' +
+				'<form id="campaign-search-form" class="form-inline mb-3">' +
+                    '<input id="campaign-search-textbox" class="form-control mr-sm-2 w-50" minlength ="3" type="search" placeholder="' + campaignSearchInputPlaceHolder + '" aria-label="Search">' +
+					'<button id="search-campaign-button" class="btn btn-nc-red my-2 my-sm-0" type="button"><i class="fas fa-search mr-2"></i>Tìm chiến dịch</button>' +
+                    '<div id="not-allow-empty-search-text" class="invalid-feedback">Lỗi! Ô tìm kiếm không được để trống hoặc từ khóa phải nhiều hơn 2 kí tự.</div>' +
+				'</form>' +
+				'<div id="campaign-search-result" class="row mt-5">' +
+				'</div>' +
+			'</div>'
+        )
+
+		var contract = await Ethereum.smartContract.deployed()
+        var numberOfCampaigns = await contract.GetNumberOfCampaigns()
+
+        $('#search-campaign-button').on('click', async function () {
+            if ($('#campaign-search-textbox').val() == '' || $('#campaign-search-textbox').val().length < 3) {
+                $('#not-allow-empty-search-text').show()
+            } else {
+                window.location.href = campaignsPagePath + '?' + searchKeywordsParameter + '=' + $('#campaign-search-textbox').val().trim()
+            }
+        })
+
+        var count = 0
+        for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
+            var campaignName = await contract.GetCampaignName(campaignID)
+            var campaignTags = await contract.GetCampaignTags(campaignID)
+            if (campaignName.toLowerCase().includes(_keywords.toLowerCase()) ||campaignTags.toLowerCase().includes(_keywords.toLowerCase())) {                    
+                var campaignImageLink = await contract.GetCampaignImageLink(campaignID)
+                var campaignDescription = await contract.GetCampaignDescription(campaignID)
+                var campaignGoal = await contract.GetCampaignGoal(campaignID)
+                var campaignMoneyCollected = await contract.GetCampaignMoneyCollected(campaignID)
+                var campaignEndDate = await contract.GetCampaignEndDate(campaignID)
+
+                var openCampaignQuery = '?' + campaignIDParameter + '=' + campaignID
+                $('#campaign-search-result').append(
+                    '<div class="col-md-4 card-group">' +
+                        '<div class="card mb-4 box-shadow">' +
+                            '<a href="' + campaignsPagePath + openCampaignQuery + '">' +
+                            '<img id="campaign-' + campaignID + '-image" class="card-img-top" style="height: 225px; width: 100%; display: block;" src="' + campaignImageLink + '" data-holder-rendered="true">' +
+                            '</a>' +
+                            '<div class="card-body h-100 pb-0">' +
+                                '<h5 id="campaign-' + campaignID + '-name" class="card-title">' + campaignName +'</h5>' +
+                                '<p id="campaign-' + campaignID + '-description" class="card-text text-justify">' + Utilities.reduceString(campaignDescription, 150) + '</p>' +
+                            '</div>' +
+                            '<div class="card-footer bg-white">' +
+                                '<p class="text-muted text-right"><small><i>Ngày hết hạn: ' + campaignEndDate + '</i></small></p>' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                '<div class="btn-group">' +                                
+                                    '<a id="campaign-' + campaignID + '-view-button" class="btn btn-sm btn-nc-red py-1 mr-1 rounded-pill" href="' + campaignsPagePath + openCampaignQuery + '" role="button"><i class="fas fa-glasses mr-2"></i>Xem thêm</a>' +
+                                '</div>' +
+                                '<small id="campaign-' + campaignID + '-funding-status" class="text-muted w-60">' +
+                                    'Tổng tích lũy: ' + ((campaignMoneyCollected / campaignGoal) * 100).toFixed(2) + '%' +
+                                    '<div id="campaign-' + campaignID + '-progress" class="progress mt-1" style="height: 8px;">' +
+                                    '</div>' +
+                                '</small>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                )
+                CampaignPage.loadProgressBar(campaignMoneyCollected, campaignGoal, '#campaign-' + campaignID + '-progress', false)
+                count++
+            }
+        }
+        if (count == 0) {
+            $('#campaign-search-result').after('<p id="no-search-result-found">Không tìm thấy kết quả phù hợp nào!</p>')
         }
     },
 
     loadCampaignsByCampaignIDDescending: async function (_pageIndex) {
         console.log('\n[TASK] Loading campaigns...')
 		$('main').append(
-			'<div id="list-of-campaigns" class="container mb-4">' +
+			'<div id="list-of-campaigns" class="container mb-3">' +
 				'<hr>' +
 				'<h1 id="campaign-search-title" class="display-45 font-weight-light my-4">' + campaignSearchTitle + '</h1>' +
-				'<form id="campaign-search-form" class="form-inline mb-5">' +
+				'<form id="campaign-search-form" class="form-inline mb-3">' +
                     '<input id="campaign-search-textbox" class="form-control mr-sm-2 w-50" minlength ="3" type="search" placeholder="' + campaignSearchInputPlaceHolder + '" aria-label="Search" disabled>' +
 					'<button id="search-campaign-button" class="btn btn-nc-red my-2 my-sm-0" type="button"><i class="fas fa-search mr-2"></i>Tìm chiến dịch</button>' +
                     '<div id="not-allow-empty-search-text" class="invalid-feedback">Lỗi! Ô tìm kiếm không được để trống hoặc từ khóa phải nhiều hơn 2 kí tự.</div>' +
 				'</form>' +
-				'<div id="campaign-search-result" class="row">' +
+				'<div id="campaign-search-result" class="row mt-5">' +
 				'</div>' +
                 '<nav id="pagination-area">' +
                     '<ul id="campaigns-pagination" class="pagination justify-content-center mt-3">' +
@@ -73,6 +151,7 @@ var CampaignPage = {
                 '</nav>' +
 			'</div>'
         )
+
         console.log('\t[INFO] Loaded the page structure')
 
 		var contract = await Ethereum.smartContract.deployed()
@@ -82,55 +161,7 @@ var CampaignPage = {
             if ($('#campaign-search-textbox').val() == '' || $('#campaign-search-textbox').val().length < 3) {
                 $('#not-allow-empty-search-text').show()
             } else {
-                $('#not-allow-empty-search-text').hide()
-                $('#campaign-search-result').remove()
-                $('#no-search-result-found').remove()
-                $('#campaigns-pagination').remove()
-                $('#campaign-search-form').after('<div id="campaign-search-result" class="row">')                
-                var count = 0
-                for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
-                    var campaignName = await contract.GetCampaignName(campaignID)
-                    if (campaignName.toLowerCase().includes($('#campaign-search-textbox').val().toLowerCase())) {                    
-                        var campaignImageLink = await contract.GetCampaignImageLink(campaignID)
-                        var campaignDescription = await contract.GetCampaignDescription(campaignID)
-                        var campaignGoal = await contract.GetCampaignGoal(campaignID)
-                        var campaignMoneyCollected = await contract.GetCampaignMoneyCollected(campaignID)
-                        var campaignEndDate = await contract.GetCampaignEndDate(campaignID)
-    
-                        var openCampaignQuery = '?' + campaignIDParameter + '=' + campaignID
-                        $('#campaign-search-result').append(
-                            '<div class="col-md-4 card-group">' +
-                                '<div class="card mb-4 box-shadow">' +
-                                    '<a href="' + campaignsPagePath + openCampaignQuery + '">' +
-                                    '<img id="campaign-' + campaignID + '-image" class="card-img-top" style="height: 225px; width: 100%; display: block;" src="' + campaignImageLink + '" data-holder-rendered="true">' +
-                                    '</a>' +
-                                    '<div class="card-body h-100 pb-0">' +
-                                        '<h5 id="campaign-' + campaignID + '-name" class="card-title">' + campaignName +'</h5>' +
-                                        '<p id="campaign-' + campaignID + '-description" class="card-text text-justify">' + Utilities.reduceString(campaignDescription, 150) + '</p>' +
-                                    '</div>' +
-                                    '<div class="card-footer bg-white">' +
-                                        '<p class="text-muted text-right"><small><i>Ngày hết hạn: ' + campaignEndDate + '</i></small></p>' +
-                                        '<div class="d-flex justify-content-between align-items-center">' +
-                                        '<div class="btn-group">' +                                
-                                            '<a id="campaign-' + campaignID + '-view-button" class="btn btn-sm btn-nc-red py-1 mr-1 rounded-pill" href="' + campaignsPagePath + openCampaignQuery + '" role="button"><i class="fas fa-glasses mr-2"></i>Xem thêm</a>' +
-                                        '</div>' +
-                                        '<small id="campaign-' + campaignID + '-funding-status" class="text-muted w-60">' +
-                                            'Tổng tích lũy: ' + ((campaignMoneyCollected / campaignGoal) * 100).toFixed(2) + '%' +
-                                            '<div id="campaign-' + campaignID + '-progress" class="progress mt-1" style="height: 8px;">' +
-                                            '</div>' +
-                                        '</small>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>'
-                        )
-                        CampaignPage.loadProgressBar(campaignMoneyCollected, campaignGoal, '#campaign-' + campaignID + '-progress', false)
-                        count++
-                    }
-                }
-                if (count == 0) {
-                    $('#campaign-search-result').after('<p id="no-search-result-found">Không tìm thấy kết quả phù hợp nào!</p>')
-                }
+                window.location.href = campaignsPagePath + '?' + searchKeywordsParameter + '=' + $('#campaign-search-textbox').val().trim()
             }
         })
 
@@ -355,7 +386,7 @@ var CampaignPage = {
                             '<label for="campaign-' + _campaignID + '-description">Mô tả</label>' +
                             '<p id="campaign-' + _campaignID + '-description" class="text-justify">' + campaignDescription + '</p>' +
                             '<label for="campaign-' + _campaignID + '-tags">Từ khóa</label>' +
-                            '<p id="campaign-' + _campaignID + '-tags"><i>' + campaignTags + '</i></p>' +
+                            '<p id="campaign-' + _campaignID + '-tags"></p>' +
                             '<label for="campaign-' + _campaignID + '-progress">Tiến trình gây quỹ</label>' +
                             '<div id="campaign-' + _campaignID + '-progress" class="progress mt-1" style="height: 24px;">' +
                             '</div>' +
@@ -366,6 +397,21 @@ var CampaignPage = {
             )
 
             // Setting for the left panel ---------------------------------------------------------------------------------
+
+            // load the tags with link
+            
+            //'<p id="campaign-' + _campaignID + '-tags"><i>' + campaignTags + '</i></p>' +
+            const tagWords = campaignTags.split(',');
+            for (var tagWordIndex = 0; tagWordIndex < tagWords.length; tagWordIndex++) {
+                var comma = ''              
+                if (tagWordIndex != (tagWords.length - 1)) {
+                    comma = ','
+                }
+                $('#campaign-' + _campaignID + '-tags').append(
+                    '<a id="tag-keyword-' + (tagWordIndex + 1 ) + '" href="' + campaignsPagePath + '?' + searchKeywordsParameter + '=' + tagWords[tagWordIndex] + '">' + tagWords[tagWordIndex] + '</a>' + comma
+                )
+            }
+        console.log(words.length)
 
             // Check if the campaign contains the original link from another website so that display it in description section
             if (campaignlink != '') {
