@@ -21,7 +21,7 @@ var Profile = {
 		var myProfileTitle = 'Chiến dịch của tôi!'
 		var myProfileDescription = 'Xin chào, <strong>' + window.web3.eth.defaultAccount + '</strong>! Đây là danh sách những chiến dịch bạn đã tạo:'
 		$('main').append(
-			'<div id="list-of-campaigns" class="container mb-4">' +
+			'<div id="campaigns-of-mine" class="container mb-4">' +
 				'<hr>' +
 				'<h1 id="my-profile-title" class="display-45 font-weight-light my-4">' + myProfileTitle + '</h1>' +
 				'<p id="my-profile-description">' + myProfileDescription + '</p>' +
@@ -29,8 +29,9 @@ var Profile = {
 		)
 
 		var contract = await Ethereum.smartContract.deployed()
-        var numberOfCampaigns = await contract.GetNumberOfCampaigns()
-		
+		var numberOfCampaigns = await contract.GetNumberOfCampaigns()
+
+		var count = 0		
 		for (var campaignID = (numberOfCampaigns - 1); campaignID >= 0; campaignID--) {
 			var campaignOwner = await contract.GetCampaignOwner(campaignID)
 			if (campaignOwner.toLowerCase() == window.web3.eth.defaultAccount) {   
@@ -86,9 +87,17 @@ var Profile = {
 					'</div>'
 				)
 				Profile.loadProgressBar(campaignMoneyCollected, campaignGoal, '#campaign-' + campaignID + '-progress', false)
-				//count++ 
+				count++ 
 			}
 		}
+        if (count == 0) {
+            $('#campaigns-of-mine').append(
+				'<p id="no-search-result-found">Không tìm thấy bất kì chiến dịch nào mà bạn đã tạo!</p>' +
+				'<div class="text-center">' +
+					'<a id="create-a-new-campaign-button" class="btn btn-nc-red btn-lg my-3" href="' + createCampaignsPagePath + '" role="button"><i class="fab fa-font-awesome-flag mr-2"></i>Tạo một chiến dịch gây quỹ mới</a>' +
+				'</div>'
+			)
+        }
 	},
 
     loadProgressBar: function (_campaignMoneyCollected, _campaignGoal, _selector, _IsShowPercentage) {
