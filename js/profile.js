@@ -92,7 +92,7 @@ var Profile = {
 		}
         if (count == 0) {
             $('#campaigns-of-mine').append(
-				'<p id="no-search-result-found">Không tìm thấy bất kì chiến dịch nào mà bạn đã tạo!</p>' +
+				'<p id="no-search-result-found">Không tìm thấy bất kì chiến dịch nào! Vui lòng tạo một chiến dịch mới.</p>' +
 				'<div class="text-center">' +
 					'<a id="create-a-new-campaign-button" class="btn btn-nc-red btn-lg my-3" href="' + createCampaignsPagePath + '" role="button"><i class="fab fa-font-awesome-flag mr-2"></i>Tạo một chiến dịch gây quỹ mới</a>' +
 				'</div>'
