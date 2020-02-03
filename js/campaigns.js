@@ -405,10 +405,10 @@ var CampaignPage = {
             for (var tagWordIndex = 0; tagWordIndex < tagWords.length; tagWordIndex++) {
                 var comma = ''              
                 if (tagWordIndex != (tagWords.length - 1)) {
-                    comma = ','
+                    comma = ', '
                 }
                 $('#campaign-' + _campaignID + '-tags').append(
-                    '<a id="tag-keyword-' + (tagWordIndex + 1 ) + '" href="' + campaignsPagePath + '?' + searchKeywordsParameter + '=' + tagWords[tagWordIndex] + '">' + tagWords[tagWordIndex] + '</a>' + comma
+                    '<a id="tag-keyword-' + (tagWordIndex + 1 ) + '" href="' + campaignsPagePath + '?' + searchKeywordsParameter + '=' + tagWords[tagWordIndex].trim() + '">' + tagWords[tagWordIndex].trim() + '</a>' + comma
                 )
             }
 
@@ -467,13 +467,13 @@ var CampaignPage = {
                 }
             }
             else {
-                if (campaignOwner.toLowerCase() != window.web3.eth.defaultAccount) {
-                    CampaignPage.contributeToCampaignOwnerFromCampaigner(contract, _campaignID, campaignOwner)                    
-                } else {
-                    if (Number(campaignStatus) != 2) {
-                        $('#campaign-information div.order-md-2').append(
-                            CampaignPage.closeCampaignByOwner(contract, _campaignID)
-                        )
+                if (Number(campaignStatus) != 2) {
+                    if (campaignOwner.toLowerCase() != window.web3.eth.defaultAccount) {
+                        CampaignPage.contributeToCampaignOwnerFromCampaigner(contract, _campaignID, campaignOwner)                    
+                    } else {
+                            $('#campaign-information div.order-md-2').append(
+                                CampaignPage.closeCampaignByOwner(contract, _campaignID)
+                            )
                     }
                 }
             }

@@ -11615,12 +11615,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xa4428E8735fdC0A71E499065d4e57E1B6e8115D0",
-      "transactionHash": "0x8bccd5e752cd28c04eda5997f831e60f0d846fd5319e6451ecd594b98b5c53a5"
+      "address": "0x05188c6763637554c332d8271AB3DB84BA43f713",
+      "transactionHash": "0x0611490a6d95bfdc3214e10186756e549dadbb8a8abb93157855a735bfb6ef79"
     }
   },
   "schemaVersion": "3.0.22",
-  "updatedAt": "2020-02-02T08:19:55.090Z",
+  "updatedAt": "2020-02-03T01:43:50.282Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
